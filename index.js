@@ -1,12 +1,9 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const faker = require('faker');
+const UserController = require ("./UserController");
 const app = express();
-
-/* Version de l'API */
-const version = 'v1';
-
-/* Tableau d'utilisateurs */
 const users = [];
 
 
@@ -26,66 +23,73 @@ for (let i = 0; i < 10; i++) {
     });
 }
 
+const version = 'v1';
+const userController = new UserController(users);
+
+/* Routes avec un controller */
+app.get(`/${version}/users`, userController.getAll.bind(userController));
+app.get(`/${version}/users/:id`, userController.getById.bind(userController));
+app.post(`/${version}/users`, userController.createUser.bind(userController));
+app.put(`/${version}/users/:id`, userController.updateUser.bind(userController));
+app.delete(`/${version}/users/:id`, userController.deleteUser.bind(userController));
 
 /* on lui passe la variable de version 'v1' -> utiliser les backquotes `` */
-app.get(`/${version}/users`, (req, res) => {
-    res.json(users);
-});
-
+// app.get(`/${version}/users`, (req, res) => {
+//     res.json(users);
+// });
 
 /* Récupère un utilisateur par son id */
-app.get(`/${version}/users/:id`, (req, res) => {
-    const id = req.params.id - 1;
-
-    /*  si l'id dépasse la longueur du tableau,
-     alors ça veut dire qu'il n'existe pas et donc ça renvoie une erreur 404
-     */
-    if(id > users.length -1 || id < 1) {
-        res.status(404);
-    }
-    res.json(users[id] || null);
-});
-
+// app.get(`/${version}/users/:id`, (req, res) => {
+//     const id = req.params.id - 1;
+//
+//     /*  si l'id dépasse la longueur du tableau,
+//      alors ça veut dire qu'il n'existe pas et donc ça renvoie une erreur 404
+//      */
+//     if(id > users.length -1 || id < 1) {
+//         res.status(404);
+//     }
+//     res.json(users[id] || null);
+// });
 
 /* Ajoute un utilisateur au tableau des users, avec la méthode POST */
-app.post(`/${version}/users`, (req, res) => {
-    const user = req.body;
-
-    users.push(user);
-    console.log(user.email);
-
-    res.json(null);
-});
-
+// app.post(`/${version}/users`, (req, res) => {
+//     const user = req.body;
+//
+//     users.push(user);
+//     console.log(user.email);
+//
+//     res.json(null);
+// });
 
 /* Récupère un utilisateur par son id */
-app.put(`/${version}/users/:id`, (req, res) => {
-    const id = req.params.id - 1;
-    const user = req.body;
-
-    users[id] = user;
-    // console.log(users[id]);
-    // console.log(user);
-
-    res.json(users[id]);
-});
-
+// app.put(`/${version}/users/:id`, (req, res) => {
+//     const id = req.params.id - 1;
+//     const user = req.body;
+//
+//     users[id] = user;
+//     // console.log(users[id]);
+//     // console.log(user);
+//
+//     res.json(users[id]);
+// });
 
 /* Supprime l'utilisateur par son id */
-app.delete(`/${version}/users/:id`, (req, res) => {
-    const id = req.params.id - 1;
-
-    if(id > users.length -1) {
-        res.json(null);
-        return;
-    }
-
-    //supprime l'utilisateur du tableau
-    users.splice(id, 1);
-
-    res.json(null);
-
-});
+// app.delete(`/${version}/users/:id`, (req, res) => {
+//     const id = req.params.id - 1;
+//
+//     if(id > users.length -1) {
+//         res.json(null);
+//         return;
+//     }
+//
+//     //supprime l'utilisateur du tableau
+//     users.splice(id, 1);
+//
+//     res.json(null);
+//
+// });
 
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
+
+console.log('coucou');
