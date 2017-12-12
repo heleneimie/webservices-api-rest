@@ -17,6 +17,11 @@
   },
   "homepage": "https://github.com/heleneimie/webservices-api-rest#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "jwt-simple": "^0.5.1"
+  },
+  "devDependencies": {
+    "faker": "^4.1.0"
   }
 }
